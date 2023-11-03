@@ -40,7 +40,7 @@ def grad_cam(mask,torch_img):
     # images = make_grid(torch.cat(images, 0), nrow=5)
     # output_dir = 'outputs'
     # os.makedirs(output_dir, exist_ok=True)
-    # output_name = "result.png"
+    # output_name = "vectorized_vgg.png"
     # output_path = os.path.join(output_dir, output_name)
     # save_image(images, output_path)
     # PIL.Image.open(output_path)

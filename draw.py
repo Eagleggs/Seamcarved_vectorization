@@ -20,7 +20,12 @@ class feature_map_class():
         self.circle_radius = self.size / 40
         self.fig, self.ax = plt.subplots()
         self.feature_map = grad_cam(self.mask, self.image)
-
+        self.title_font ={
+            'family': 'serif',  # Font family (e.g., 'serif', 'sans-serif', 'monospace')
+            'color': 'black',  # Font color
+            'weight': 'light',  # Font weight ('normal', 'bold', 'heavy', 'light', etc.)
+            'size': 10  # Font size
+        }
     def paint_featuremap(self):
         # Create a figure and axis for Matplotlib
 
@@ -32,6 +37,8 @@ class feature_map_class():
         self.fig.canvas.mpl_connect('button_press_event', self.on_button)
         self.fig.canvas.mpl_connect('button_release_event', self.on_button)
         self.fig.canvas.mpl_connect('key_press_event', self.on_key)
+        plt.title('Left click and move around on the image to start painting, right click to stop. \n Use arrow keys '
+                  '"up" and "down" to resize the brush',fontdict=self.title_font)
         plt.show()
         # Function to create a circular mask
 
@@ -59,6 +66,9 @@ class feature_map_class():
             self.mask = torch.clamp((mask + self.mask), 0, 1)
             self.feature_map = grad_cam(self.mask, self.image)
             self.ax.clear()
+            plt.title(
+                'Left click and move around on the image to start painting, right click to stop. \n Use arrow keys '
+                '"up" and "down" to resize the brush\n cancel the plot to continue', fontdict=self.title_font)
             self.ax.imshow(self.feature_map.permute(1, 2, 0))  # Display the color image
             self.ax.add_patch(plt.Circle(self.circle_center, self.circle_radius, color='w', fill=False))
             self.fig.canvas.draw()
@@ -72,6 +82,9 @@ class feature_map_class():
             if event.name == 'button_press_event':
                 self.selecting = False
                 self.ax.clear()
+                plt.title(
+                    'Left click and move around on the image to start painting, right click to stop. \n Use arrow keys '
+                    '"up" and "down" to resize the brush', fontdict=self.title_font)
                 self.ax.imshow(self.feature_map.permute(1, 2, 0))  # Display the color image
                 self.fig.canvas.draw()
 

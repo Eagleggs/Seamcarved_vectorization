@@ -170,16 +170,16 @@ def vectorize_image(to_vectorize, triangles, ref_triangles, ref_image):
                         to_vectorize[:, :, y, x] = sampled_value
 
 
-def plot_grid_triangles(grid, triangles):
+def plot_grid_triangles(grid, triangles, name):
     # Plot the grid
     plt.figure(figsize=(8, 8))
     plt.gca().set_aspect('equal', adjustable='box')
-    plt.plot(grid[:, :, 0], grid[:, :, 1], 'ko', markersize=1)
+    plt.plot(grid[:, :, 0], grid[:, :, 1], 'ko', markersize=0.05)
 
     # Plot the triangles
     for row in triangles:
         for triangle in row:
-            polygon = Polygon(triangle, closed=True, edgecolor='b', facecolor='none')
+            polygon = Polygon(triangle, closed=True, edgecolor='black', facecolor='none')
             plt.gca().add_patch(polygon)
 
     plt.xlim(0, grid.shape[0] - 1)
@@ -190,5 +190,5 @@ def plot_grid_triangles(grid, triangles):
     plt.ylabel('Y')
     plt.title('Grid and Triangles')
     plt.grid(True)
-    plt.savefig('grid_and_triangles.png', dpi=300)
+    plt.savefig(name, dpi=300)
     plt.show()

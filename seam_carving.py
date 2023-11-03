@@ -44,17 +44,16 @@ def find_low_energy_seam(energy_map):
 
 def remove_seam(seam, image, mask):
     b, c, h, w = image.shape
-    new_image = np.zeros((b, c, h, w - 1))
-    new_mask = np.zeros((1, 1, h, w - 1))
-    for b_idx in range(b):
-        for c_idx in range(c):
-            for row in range(h):
-                # Remove the pixel corresponding to the seam
-                col = seam[row]
-                new_image[b_idx, c_idx, row, :col] = image[b_idx, c_idx, row, :col]
-                new_image[b_idx, c_idx, row, col:] = image[b_idx, c_idx, row, col + 1:]
-                new_mask[0, 0, row, :col] = mask[0, 0, row, :col]
-                new_mask[0, 0, row, col:] = mask[0, 0, row, col + 1:]
+    new_w = w - 1
+
+    new_image = np.zeros((b, c, h, new_w), dtype=image.dtype)
+    new_mask = np.zeros((1, 1, h, new_w), dtype=mask.dtype)
+
+    for row in range(h):
+            col = seam[row]  # Column to remove for this row
+            new_image[:, :, row, :] = np.delete(image[:, :, row, :], col, axis=-1)
+            new_mask[0, 0, row, :] = np.delete(mask[0, 0, row, :], col, axis=-1)
+
     return new_image, new_mask
 
 def mark_red(seam, image):
